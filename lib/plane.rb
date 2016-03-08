@@ -1,10 +1,9 @@
 class Plane
 
-
   attr_reader :flying, :airport
 
   def initialize
-    @flying = false
+    @flying = true
   end
 
   def land(airport)
@@ -12,8 +11,8 @@ class Plane
     @airport = airport
   end
 
-  def take_off(airport)
-    @flying = true
+  def take_off
     @airport = nil
+    @flying = true
   end
 end
