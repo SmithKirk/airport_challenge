@@ -25,10 +25,16 @@ describe 'Airport' do
         airport.take_off(plane)
         expect(airport.planes).not_to include(plane)
       end
+
+      it 'raises error if plane is flying' do
+        expect{airport.take_off(plane)}.to raise_error ("Cannot take off: plane is flying")
+      end
     end
 
     context 'when stormy' do
       before do
+        allow(airport).to receive(:stormy?).and_return false
+        airport.land(plane)
         allow(airport).to receive(:stormy?).and_return true
       end
 

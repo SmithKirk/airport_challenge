@@ -27,6 +27,18 @@ describe 'Features' do
       expect(plane.airport).to eq nil
     end
 
+    # Plane can only take off from airport it is at
+    it '' do
+
+    end
+
+    # Flying planes cannot take off or be at airport
+    it 'take off raises error if plane is flying' do
+      expect{airport.take_off(plane)}.to raise_error ("Cannot take off: plane is flying")
+    end
+
+    # A landed plane cannot land again and must be at airport
+
     context 'when full' do
       before do
         20.times do
@@ -45,6 +57,8 @@ describe 'Features' do
 
   context 'Stormy' do
     before do
+      allow(airport).to receive(:stormy?).and_return false
+      airport.land(plane)
       allow(airport).to receive(:stormy?).and_return true
     end
 

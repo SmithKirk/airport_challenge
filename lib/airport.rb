@@ -21,7 +21,8 @@ class Airport
   end
 
   def take_off(plane)
-    fail "Cannot take off: Stormy" if stormy? true
+    fail "Cannot take off: plane is flying" if flying?(plane)
+    fail "Cannot take off: Stormy" if stormy?
     @planes.delete(plane)
     plane.take_off
   end
@@ -32,10 +33,14 @@ class Airport
 
   private
   def stormy?
-    weather.stormy?
+    @weather.stormy?
   end
 
   def full?
     @planes.size >= @capacity
+  end
+
+  def flying?(plane)
+    plane.flying == true
   end
 end
