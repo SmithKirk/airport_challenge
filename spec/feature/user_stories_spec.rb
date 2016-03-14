@@ -28,9 +28,17 @@ describe 'Features' do
       expect(plane.airport).to eq nil
     end
 
-    # Plane can only take off from airport it is at
-    it '' do
+    # Landed plane must be at an airport
+    it 'non-flying planes must be in an airport' do
+      airport.land(plane)
+      expect(plane.airport).to eq airport
+    end
 
+    # Plane can only take off from airport it landed at
+    it 'take off from other airport raises error' do
+      other_airport = Airport.new
+      airport.land(plane)
+      expect{other_airport.take_off(plane)}.to raise_error ("Cannot take off: plane not at airport")
     end
 
     # Flying planes cannot take off or be at airport

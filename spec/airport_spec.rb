@@ -36,6 +36,14 @@ describe 'Airport' do
       it 'raises error if plane not at airport' do
         expect{airport.take_off(plane)}.to raise_error ("Cannot take off: plane not at airport")
       end
+
+      it 'take off from other airport raises error' do
+        other_airport = Airport.new
+        airport.land(plane)
+        expect{other_airport.take_off(plane)}.to raise_error ("Cannot take off: plane not at airport")
+      end
+
+
     end
 
     context 'when stormy' do
@@ -69,6 +77,11 @@ describe 'Airport' do
       it 'raise error if plane is already at airport' do
         airport.land(plane)
         expect{airport.land(plane)}.to raise_error ("Cannot land: plane is already at airport")
+      end
+
+      it 'non-flynig planes must be in an airport' do
+        airport.land(plane)
+        expect(plane.airport).to eq airport
       end
 
       context 'when full' do

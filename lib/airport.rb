@@ -19,6 +19,7 @@ class Airport
     fail "Cannot land: plane is already at airport" if at_airport?(plane)
     @planes << plane
     plane.land(self)
+    plane
   end
 
   def take_off(plane)
