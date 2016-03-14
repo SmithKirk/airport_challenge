@@ -19,6 +19,11 @@ describe 'Plane' do
       plane.land(airport)
       expect(plane.airport).to eq airport
     end
+
+    it 'raise error if already landed' do
+      plane.land(airport)
+      expect{plane.land(airport)}.to raise_error ("Cannot land: plane is already at airport")
+    end
   end
 
   describe '#take_off' do
@@ -32,6 +37,10 @@ describe 'Plane' do
       plane.land(airport)
       plane.take_off
       expect(plane.flying).to eq true
+    end
+
+    it 'raises error if plane is already flying' do
+      expect{plane.take_off}.to raise_error ("Cannot take off: plane is flying")
     end
   end
 

@@ -2,10 +2,11 @@ describe 'Features' do
 
   let(:airport){Airport.new}
   let(:plane){Plane.new}
+  let(:weather){Weather}
 
   context 'Not stormy' do
     before do
-      allow(airport).to receive(:stormy?).and_return false
+      allow_any_instance_of(weather).to receive(:stormy?).and_return false
     end
 
     # As an air traffic controller
@@ -33,16 +34,21 @@ describe 'Features' do
     end
 
     # Flying planes cannot take off or be at airport
-    it 'take off raises error if plane is flying' do
-      expect{airport.take_off(plane)}.to raise_error ("Cannot take off: plane is flying")
+    it 'take off raises error if plane not at airport' do
+      expect{plane.take_off}.to raise_error ("Cannot take off: plane is flying")
+      expect{airport.take_off(plane)}.to raise_error ("Cannot take off: plane not at airport")
     end
 
     # A landed plane cannot land again and must be at airport
+    it 'land raises error if already landed' do
+      airport.land(plane)
+      expect{airport.land(plane)}.to raise_error ("Cannot land: plane is already at airport")
+    end
 
     context 'when full' do
       before do
-        20.times do
-          airport.land(plane)
+        Airport::DEFAULT_CAPACITY.times do
+          airport.land(Plane.new)
         end
       end
 
@@ -57,9 +63,9 @@ describe 'Features' do
 
   context 'Stormy' do
     before do
-      allow(airport).to receive(:stormy?).and_return false
+      allow_any_instance_of(weather).to receive(:stormy?).and_return false
       airport.land(plane)
-      allow(airport).to receive(:stormy?).and_return true
+      allow_any_instance_of(weather).to receive(:stormy?).and_return true
     end
 
     # As an air traffic controller
