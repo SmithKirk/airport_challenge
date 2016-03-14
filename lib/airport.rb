@@ -17,15 +17,15 @@ class Airport
     fail "Cannot land: airport full" if full?
     fail "Cannot land: Stormy" if stormy?
     fail "Cannot land: plane is already at airport" if at_airport?(plane)
-    @planes << plane
     plane.land(self)
+    add_plane(plane)
     plane
   end
 
   def take_off(plane)
     fail "Cannot take off: plane not at airport" unless at_airport?(plane)
     fail "Cannot take off: Stormy" if stormy?
-    @planes.delete(plane)
+    remove_plane(plane)
     plane.take_off
     plane
   end
@@ -35,16 +35,27 @@ class Airport
   end
 
   private
+
+  attr_reader :weather
+
+  def add_plane(plane)
+    planes << plane
+  end
+
+  def remove_plane(plane)
+    planes.delete(plane)
+  end
+
   def stormy?
-    @weather.stormy?
+    weather.stormy?
   end
 
   def full?
-    @planes.size >= @capacity
+    planes.size >= capacity
   end
 
   def at_airport?(plane)
-    @planes.include?(plane)
+    planes.include?(plane)
   end
 
   def flying?(plane)
